@@ -1,0 +1,130 @@
+@model MyProjectClient.Models.Users
+@{
+    ViewData["Title"] = "SignUp";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- link bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- link css custom -->
+    <link rel="stylesheet" href="~/css/login.css">
+    <title>Sign Up Page</title>
+</head>
+
+<body>
+    <style>
+        .error {
+            color: red;
+            font-style: italic;
+            font-size: 14px;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+        }
+
+        li {
+            margin-top: -20px;
+        }
+    </style>
+
+    <section class="min-vh-100 gradient-form background">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9">
+                    <div class="card text-black">
+                        <div class="row g-0">
+                            <div class="col-lg-7 left_side">
+                                <div class="card-body p-md-5 mx-md-4">
+                                    <form asp-controller="Auth" asp-action="SignUp" method="post">
+                                        <div class="text-center" style="color: rgb(47, 69, 173);">
+                                            <h1>Sign Up</h1>
+                                        </div>
+
+                                        <div class="form-outline mb-0">
+                                            <label asp-for="PhoneNumber" class="form-label">Phone Number *</label>
+                                            <input asp-for="PhoneNumber" type="text" class="form-control" />
+                                            <span asp-validation-for="PhoneNumber" class="error"
+                                                style="margin-left: 28px;"></span>
+                                            <div asp-validation-summary="ModelOnly" class="error text-danger"></div>
+                                        </div>
+
+                                        <div class="form-outline mb-0">
+                                            <label asp-for="Email" class="form-label">Email *</label>
+                                            <input asp-for="Email" type="text" class="form-control" />
+                                            <span asp-validation-for="Email" class="error"
+                                                style="margin-left: 28px;"></span>
+                                        </div>
+
+                                        <div class="form-outline mb-0">
+                                            <label asp-for="Username" class="form-label">Username *</label>
+                                            <input asp-for="Username" type="text" class="form-control" />
+                                            <span asp-validation-for="Username" class="error"
+                                                style="margin-left: 28px;"></span>
+                                        </div>
+
+                                        <div class="form-outline mb-0">
+                                            <label asp-for="Password" class="form-label">Password *</label>
+                                            <input asp-for="Password" type="password" class="form-control" />
+                                            <span asp-validation-for="Password" class="error"
+                                                style="margin-left: 28px;"></span>
+                                            <div asp-validation-summary="ModelOnly" class="error text-danger"></div>
+                                        </div>
+
+                                        <div class="form-outline mb-0">
+                                            <label asp-for="UserType" class="form-label">Role *</label>
+                                            <select asp-for="UserType" class="form-control">
+                                                <option value="3">Customer</option>
+                                                <option value="2">Staff</option>
+                                            </select>
+                                            <span asp-validation-for="UserType" class="error"></span>
+                                        </div>
+
+                                        <div class="btn_box text-center" style="margin-top: 30px;">
+                                            <button class="btn text-white btn-block fa-lg gradient-custom-2 mb-1"
+                                                type="submit">Sign up</button>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">You have an account?</p>
+                                            <a asp-action="Login" asp-controller="Auth" class="signup">Login</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-5 d-flex align-items-center">
+                                <div class="img_box">
+                                    <img src="/assets/login_pic/sign-up.png" style="width: 100%" alt="picture signup" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Include jQuery and validation scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+</body>
+
+</html>

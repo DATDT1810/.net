@@ -1,0 +1,474 @@
+@model IEnumerable<Users>
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using MyProjectClient.Controllers
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- link bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- link css custom -->
+    <title>Login Page</title>
+</head>
+
+<style>
+    .page-header {
+        margin-top: 20px;
+    }
+
+    .page-header h1 {
+        font-weight: 300;
+        font-size: 30px;
+        color: #4c4d5a;
+        margin-bottom: 15px;
+        text-shadow: 0 1px #fff;
+        margin-left: 5px;
+    }
+
+    .title-col th {
+        color: #1e91cf;
+        font-weight: 500;
+    }
+
+    .title-col th:hover {
+        color: #1874a6;
+    }
+
+    #newProfileContainer {
+        display: none;
+    }
+
+    .nav-item {
+        transition: transform 0.3s ease;
+    }
+
+    .nav-item:hover {
+        transform: translateY(-3px);
+    }
+
+    /*the container must be positioned relative:*/
+    .autocomplete {
+        position: relative;
+        display: inline-block;
+    }
+
+    input {
+        border: 1px solid transparent;
+        background-color: #f1f1f1;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    input[type=text] {
+        background-color: #f1f1f1;
+        width: 100%;
+    }
+
+    input[type=submit] {
+        background-color: DodgerBlue;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: #fff;
+        border-bottom: 1px solid #d4d4d4;
+    }
+
+    /*when hovering an item:*/
+    .autocomplete-items div:hover {
+        background-color: #e9e9e9;
+    }
+
+    /*when navigating through the items using the arrow keys:*/
+    .autocomplete-active {
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+</style>
+<script src="https://kit.fontawesome.com/8143c9cd7e.js" crossorigin="anonymous"></script>
+<script>
+    // JavaScript để xử lý sự kiện click
+    document.addEventListener("DOMContentLoaded", function () {
+        var navItems = document.querySelectorAll(".nav-item");
+        navItems.forEach(function (item) {
+            item.addEventListener("click", function () {
+                // Thêm lớp active khi một nav-item được click
+                navItems.forEach(function (navItem) {
+                    navItem.classList.remove("active");
+                });
+                item.classList.add("active");
+            });
+        });
+    });
+</script>
+<script>
+    function doBanOrUnban(UserName, userStyle) {
+        var notificationToadmin;
+        if (userStyle == 0) {
+            notificationToadmin = "Do you want to Ban this user: ";
+        } else if (userStyle == -1) {
+            notificationToadmin = "Do you want to delete this user: ";
+        } else if (userStyle == 3) {
+            notificationToadmin = "Do you want to Unban this user: ";
+        }
+        if (confirm(notificationToadmin + UserName)) {
+            $.ajax({
+                url: '/UserManagement/BanAccount',
+                type: 'GET',
+                data: { id: UserName, uStyle: userStyle }, // Truyền id của người dùng cần xóa
+                success: function (response) {
+                    // Xử lý kết quả nếu cần
+                    alert(response); // Hiển thị thông báo thành công hoặc thất bại
+                    location.reload();
+                },
+                error: function () {
+                    // Xử lý lỗi nếu có
+                    alert('Error occurred while deleting user.');
+                }
+            });
+        }
+    }
+</script>
+
+
+@{
+    // Lấy dữ liệu JSON từ Session
+    string userDataJson = @HttpContextAccessor.HttpContext.Session.GetString("_user");
+    // Giải mã dữ liệu JSON thành đối tượng User
+    var option = new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+    var user = System.Text.Json.JsonSerializer.Deserialize<Users>(userDataJson, option);
+}
+
+
+@if (TempData["SystemNotificationError"] != null)
+{
+    <div id="systemNotification" class="alert alert-danger m-0 p-2">
+        <p class="text-dark" style="margin-top: 5px; margin-bottom: 5px;">Notification: @TempData["SystemNotificationError"]
+        </p>
+    </div>
+}
+@if (TempData["SystemNotification"] != null)
+{
+    <div id="systemNotification" class="alert alert-success m-0 p-2">
+        <p class="text-dark" style="margin-top: 5px; margin-bottom: 5px;">Notification: @TempData["SystemNotification"]</p>
+    </div>
+}
+<div class="container">
+    <div class="position-relative text-center mt-1">
+        <img class="rounded-circle" src="~/assets/user_pic/@user.Picture" alt="admin"
+            style="width: 40px; height: 40px;">
+        <a asp-controller="AdminProfile" asp-action="Index" style="text-decoration: none;">
+            <div class="profile">
+                <h6 class="mb-0">@user.Username</h6>
+                @if (@user.UserType == 1)
+                {
+                    <span class="type">Admin</span>
+                }
+                else
+                {
+                    <span class="type">Staff</span>
+                }
+            </div>
+        </a>
+    </div>
+    <div class="page-header">
+        @if (@HttpContextAccessor.HttpContext.Session.GetString("_user") != null)
+        {
+            <a asp-controller="Auth" asp-action="Logout" class="btn btn-danger">Logout</a>
+        }
+        else
+        {
+            <a asp-controller="Auth" asp-action="Login"> Login</a>
+        }
+        <h1><a style="text-decoration: none; color: #000;" asp-action="Index" asp-route-id="3">Account Management</a>
+        </h1>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-action="Index" asp-route-id="3"><i class="fa-solid fa-users"></i></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewBag.userType == 3 ? "active" : "")" aria-current="page"
+                                asp-action="Index" asp-route-id="3">Customer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-route-id="2"
+                                class="nav-link @(ViewBag.userType == 2 ? "active" : "")">Staff</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-route-id="0"
+                                class="nav-link @(ViewBag.userType == 0 ? "active" : "")">Ban account</a>
+                        </li>
+                        <li class="nav-item dropdown" style="z-index: 99;">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                More
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item @(ViewBag.userType == -1 ? "active" : "")" <a
+                                        asp-action="Index" asp-route-id="-1">Account Delete</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="card col-md-9" style="padding: 0;">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div><i class="fas fa-list"></i> @ViewBag.nameTable list</div>
+                    @if (@ViewBag.userType == 2)
+                    {
+                        <a asp-action="Create"><i class="fa-solid fa-user-plus"></i></a>
+                    }
+                </div>
+                <div id="order" class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr class="title-col">
+                                    <th class="text-center">No.</th>
+                                    <th class="text-start">UserName</th>
+                                    <th class="text-start">E-Mail</th>
+                                    <th class="text-start">Phone</th>
+                                    <th class="text-start">Date Added</th>
+                                    <th class="text-center"><span>Action</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var Count = 0;
+                                }
+                                @foreach (var Item in @Model)
+                                {
+                                    if (@Item.UserType == ViewBag.userType)
+                                    {
+                                        Count++;
+                                        <tr>
+                                            <td class="text-center">@Count</td>
+                                            <td class="text-start">@Item.Username</td>
+                                            <td class="text-start">@Item.Email</td>
+                                            <td class="text-start">@Item.PhoneNumber</td>
+                                            <td class="text-start d-none d-lg-table-cell">@Item.createdAt</td>
+                                            <td class="text-center">
+                                                <div class="btn-group dropdown">
+                                                    <a asp-action="UserDetails" asp-route-id="@Item.Username" class="btn"
+                                                        aria-label="Edit"><i class="fas fa-pencil-alt"></i></a>
+                                                    <button type="button" class="btn dropdown-toggle dropdown-toggle-split"
+                                                        data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                                    <ul class="dropdown-menu dropdown-menu-right">
+                                                        <li>
+                                                            <h6 class="dropdown-header">Options</h6>
+                                                        </li>
+                                                        @if (@Item.UserType == 3)
+                                                        {
+                                                            <li><a class="dropdown-item" href="#"
+                                                                    onclick="doBanOrUnban('@Item.Username', 0)"><i
+                                                                        class="fas fa-ban"></i> Ban account</a></li>
+                                                        }
+                                                        @if (@Item.UserType == 3 || @Item.UserType == 2 || @Item.UserType == 1)
+                                                        {
+                                                            <li><a class="dropdown-item" href="#"
+                                                                    onclick="doBanOrUnban('@Item.Username', -1)"><i
+                                                                        class="fas fa-trash"></i> Delete</a></li>
+                                                        }
+                                                        @if (@Item.UserType == 0)
+                                                        {
+                                                            <li><a class="dropdown-item" href="#"
+                                                                    onclick="doBanOrUnban('@Item.Username', 3)"><i
+                                                                        class="fas fa-ban"></i> UnBan account</a></li>
+                                                        }
+                                                        @if (@Item.UserType == -1)
+                                                        {
+                                                            <li><a class="dropdown-item" href="#"
+                                                                    onclick="doBanOrUnban('@Item.Username', 3)"><i
+                                                                        class="fas fa-trash-restore"></i> Retore account</a></li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                @if (Count == 0)
+                                {
+                                    <tr>
+                                        <td colspan="7" class="text-center">No one banned the account.</td>
+                                    </tr>
+                                    Count = 0;
+                                }
+                                else
+                                {
+                                    Count = 0;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="filter-order" class="col-md-3 order-lg-last d-none d-lg-block mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-filter"></i> Filter
+                    </div>
+                    <div class="card-body">
+                        <form autocomplete="off" asp-action="AutoCompleteSearch" method="post">
+                            <div class=" mb-3 autocomplete" style="width: 100%;">
+                                <input id="myInput" type="text" name="userName" placeholder="Enter username"
+                                    class="form-control">
+                            </div>
+                            <input type="submit" value="Search" class="btn btn-primary">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    /*create a DIV element for each matching element:*/
+                    b = document.createElement("DIV");
+                    /*make the matching letters bold:*/
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    /*insert a input field that will hold the current array item's value:*/
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function (e) {
+                        /*insert the value for the autocomplete text field:*/
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    /*An array containing all the country names in the world:*/
+    var countries = @Html.Raw(Json.Serialize(@ViewBag.UserListName));
+
+
+    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+    autocomplete(document.getElementById("myInput"), countries);
+</script>

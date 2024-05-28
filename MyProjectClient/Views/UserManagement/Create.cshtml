@@ -1,0 +1,106 @@
+@model Users
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = null;
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- link bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- link css custom -->
+
+    <title>Login Page</title>
+</head>
+<style>
+    label {
+        font-weight: 500;
+    }
+</style>
+
+<body>
+    <div id="newProfileContainer" class="container bg-white mt-5 mb-5">
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="border-right">
+                <div class="p-2 py-2 card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 style="margin: 0 auto;">Add Staff</h4>
+                    </div>
+                    <form asp-controller="UserManagement" asp-action="Create" method="post">
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <label asp-for="ZipCode" class="labels"></label>
+                                <input asp-for="ZipCode" type="text" class="form-control" placeholder="ZipCode">
+                                <span asp-validation-for="ZipCode" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="IDCard" class="labels"></label>
+                                <input asp-for="IDCard" type="text" class="form-control" placeholder="IDCard">
+                                <span asp-validation-for="IDCard" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="mt-2">
+                            <div class="col-md-12">
+                                <label asp-for="Email" class="labels"></label>
+                                <input asp-for="Email" type="email" class="form-control" placeholder="Email">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label asp-for="PhoneNumber" class="labels"></label>
+                                <input asp-for="PhoneNumber" type="text" class="form-control"
+                                    placeholder="Phone number">
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                @if (TempData["SystemNotificationError"] != null)
+                                {
+                                    <span class="text-danger">@TempData["SystemNotificationError"]</span>
+                                }
+                            </div>
+                            <div class="col-md-12 mt-2">
+                                <label asp-for="Username" class="labels"></label>
+                                <input asp-for="Username" type="text" class="form-control" placeholder="Username">
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-12 mt-2">
+                                <label asp-for="Password" ~class="labels"></label>
+                                <input asp-for="Password" type="password" class="form-control" placeholder="Password">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-center">
+                            <button class="btn btn-primary profile-button" type="submit">
+                                Add new
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+<script>
+    setTimeout(function () {
+        var systemNotification = document.getElementById('systemNotification');
+        if (systemNotification) {
+            systemNotification.style.display = 'none';
+        }
+    }, 3000);
+</script>
