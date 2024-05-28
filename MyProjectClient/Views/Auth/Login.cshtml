@@ -1,0 +1,99 @@
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- link bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- link css custom -->
+    <link rel="stylesheet" href="~/css/login.css">
+
+    <title>Login Page</title>
+</head>
+
+<body>
+    <!-- Login start -->
+    <section class="gradient-form background min-vh-100 d-flex align-items-center">
+        <div class="container py-5">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-md-9">
+                    <div class="card text-black">
+                        <div class="row g-0">
+                            <!-- Left-side -->
+                            <div class="col-lg-7">
+                                <div class="card-body p-md-5 mx-md-4">
+                                    <form id="login-form" asp-action="Login" asp-controller="Auth" method="post" onsubmit="">
+                                        <div class="form-outline mb-4">
+                                            <label class="form-label" for="username">User name or Email *</label>
+                                            <input type="text" id="username" name="Username" class="form-control" placeholder="Enter your user name or email" />
+                                            <span id="phoneError"></span>
+                                            <span id="emailError"></span>
+                                        </div>
+                                        <div class="form-outline mb-1">
+                                            <label class="form-label" for="password">Password *</label>
+                                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" />
+                                            <span id="passError"></span>
+                                        </div>
+                                        <a class="forgot" asp-action="ForgotPassword">Forgot Password?</a>
+                                        <div class="btn_box text-center">
+                                            <button class="btn text-white btn-block fa-lg gradient-custom-2 mb-1" type="submit">Log in</button>
+                                            @if (ViewBag.errorMessage != null)
+                                            {
+                                                <p style="color: red; font-style: italic;">@ViewBag.errorMessage</p>
+                                            }
+                                        </div>
+                                        <p style="color: red;" id="errorMessage" class="error-message text-center" name="error"></p>
+                                        <hr class="my-4">
+                                        <div class="btn_box text-center">
+                                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg btn-block btn-primary" style="background-color: #dd4b39;" type="submit"><i class="fab fa-google me-2"></i> Sign in with google</button>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <p class="mb-0">Don't have an account?</p>
+                                            <a asp-action="SignUp" asp-controller="Auth" class="signup">Sign up</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- Left-side End -->
+                            <!-- Right-side -->
+                            <div class="col-lg-5 d-flex align-items-center">
+                                <div class="img_box w-100">
+                                    <img src="assets/login_pic/login.jpg" style="width: 100%" alt="picture login" />
+                                    <a asp-controller="Auth" asp-action="Logout" class="position-absolute top-0 end-0 p-2">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- Right-side End-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Login End -->
+</body>
+
+</html>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

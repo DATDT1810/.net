@@ -1,0 +1,64 @@
+/* RESET CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* BODY */
+.form-gap {
+  padding-top: 100px;
+}
+
+.form .btn {
+  width: 100%;
+  background-color: #fbceb5;
+}
+
+.form .btn:hover {
+  width: 100%;
+  background-color: #f5aa82;
+}
+
+.form .btn:focus {
+  background-color: #f5aa82;
+}
+
+.background-wrapper {
+  background-image: url("../img/resetpass.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(70%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+img {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  width: 200px;
+  height: 100px;
+}
+
+.form-control {
+  padding: 15px;
+  border-radius: 30px;
+  border: 1px solid rgba(176, 174, 174, 0.5);
+  background-color: rgba(176, 174, 174, 0.5);
+}
+
+.form-control:hover {
+  border-radius: 30px;
+  border: 1px solid rgba(255, 254, 254, 0.5);
+  background-color: #00000000;
+}
+
+.form-control:focus {
+  border-radius: 30px;
+  border: 1px solid rgba(176, 174, 174, 0.5);
+  background-color: rgba(156, 144, 144, 0.5);
+  color: #fff;
+}

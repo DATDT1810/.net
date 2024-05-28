@@ -1,0 +1,222 @@
+@model Users
+@{
+    ViewData["Title"] = "UserDetails";
+    Layout = null;
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- link bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- link css custom -->
+
+    <title>User Details</title>
+</head>
+
+<body>
+    <div id="content">
+        <div class="page-header">
+            <div class="container">
+
+                <h1>Customers</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-controller="UserManagement" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-action="Index">Customers</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="container">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-pencil-alt"></i> Edit Customer</div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a href="#tab-general" data-bs-toggle="tab"
+                                class="nav-link active">General</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-general" class="tab-pane active">
+                            <form id="form-customer" asp-controller="UserManagement" asp-action="UserDetails"
+                                method="post" data-oc-toggle="ajax" enctype="multipart/form-data">
+                                <fieldset>
+                                    <legend>Customer Details</legend>
+                                    <div class="row mb-3 ">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">First Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="FirstName" placeholder="First Name"
+                                                id="input-firstname" class="form-control">
+                                            <div id="error-firstname" class="invalid-feedback">
+                                                <span asp-validation-for="FirstName"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Last Name</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="LastName" placeholder="LastName"
+                                                id="input-firstname" class="form-control">
+                                            <div id="error-firstname" class="invalid-feedback">
+                                                <span asp-validation-for="LastName"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Date Of
+                                            Birth</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="DateOfBirth" placeholder="Date Of Birth"
+                                                id="input-firstname" class="form-control">
+                                            <div id="error-firstname" class="invalid-feedback">
+                                                <span asp-validation-for="DateOfBirth"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Gender</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="Gender" placeholder="Gender"
+                                                id="input-firstname" class="form-control">
+                                            <div id="error-firstname" class="invalid-feedback">
+                                                <span asp-validation-for="Gender"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Address</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="Address" placeholder="Address"
+                                                id="input-firstname" class="form-control">
+                                            <div id="error-firstname" class="invalid-feedback">
+                                                <span asp-validation-for="Address"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Zip Code</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="ZipCode" placeholder="Zip code"
+                                                id="input-firstname" class="form-control">
+                                            <div id="error-firstname" class="invalid-feedback">
+                                                <span asp-validation-for="ZipCode"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Phone
+                                            Number</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="PhoneNumber" placeholder="Phone Number"
+                                                id="input-firstname" class="form-control">
+                                            <div id="error-firstname" class="invalid-feedback">
+                                                <span asp-validation-for="PhoneNumber"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Email</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="Email" placeholder="Email" id="input-firstname"
+                                                class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Username</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="Username" placeholder="Username"
+                                                id="input-firstname" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 required">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">IDCard</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="IDCard" placeholder="IDCard"
+                                                id="input-firstname" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 required">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Picture</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" asp-for="Picture" placeholder="Picture"
+                                                id="input-firstname" class="form-control" readonly>
+                                            <input type="file" name="UserPicture" id="input-firstname"
+                                                class="form-control">
+                                            <img src="~/assets/user_pic/@Model.Picture" alt="Image User"
+                                                style="width: 200px;">
+                                            <div id="error-firstname" class="invalid-feedback">
+                                                <span asp-validation-for="Picture"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Time</legend>
+                                    <div class="row mb-3 required">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Date Create</label>
+                                        <div class="col-sm-10">
+                                            <input readonly type="datetime" asp-for="createdAt" value="@Model.createdAt"
+                                                id="input-firstname" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 required">
+                                        <label for="input-firstname" class="col-sm-2 col-form-label">Date Update</label>
+                                        <div class="col-sm-10">
+                                            <input readonly type="datetime" asp-for="updateAt" value="@Model.updateAt"
+                                                id="input-firstname" class="form-control">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Password</legend>
+                                    <div class="row mb-3 required">
+                                        <label for="input-password" class="col-sm-2 col-form-label">Password</label>
+                                        <div class="col-sm-10">
+                                            <input type="password" asp-for="Password" placeholder="Password"
+                                                id="input-password" class="form-control" autocomplete="new-password">
+                                            <div id="error-password" class="invalid-feedback">
+                                                <span asp-validation-for="Password"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Other</legend>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Type</label>
+                                        <div class="col-sm-10">
+                                            <div class="form-check form-switch form-switch-lg">
+                                                <select asp-for="UserType" disabled>
+                                                    <option selected="@(Model.UserType == -1)" value="-1">Account Delete
+                                                    </option>
+                                                    <option selected="@(Model.UserType == 0)" value="0">Ban account
+                                                    </option>
+                                                    <option selected="@(Model.UserType == 1)" value="1">Admin</option>
+                                                    <option selected="@(Model.UserType == 2)" value="2">staff</option>
+                                                    <option selected="@(Model.UserType == 3)" value="3">Customer
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="save-button-container text-end">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
