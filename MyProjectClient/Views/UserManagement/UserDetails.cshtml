@@ -127,7 +127,10 @@
                                         <label for="input-firstname" class="col-sm-2 col-form-label">Email</label>
                                         <div class="col-sm-10">
                                             <input type="text" asp-for="Email" placeholder="Email" id="input-firstname"
-                                                class="form-control" readonly>
+                                                class="form-control" >
+                                                <div id="error-firstname" class="invalid-feedback">
+                                                <span asp-validation-for="Email"></span>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -181,11 +184,8 @@
                                     <div class="row mb-3 required">
                                         <label for="input-password" class="col-sm-2 col-form-label">Password</label>
                                         <div class="col-sm-10">
-                                            <input type="password" asp-for="Password" placeholder="Password"
-                                                id="input-password" class="form-control" autocomplete="new-password">
-                                            <div id="error-password" class="invalid-feedback">
-                                                <span asp-validation-for="Password"></span>
-                                            </div>
+                                            <input type="password" asp-for="Password" placeholder="Password" value="@Model.Password"
+                                                id="input-password" class="form-control" readonly>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -195,7 +195,7 @@
                                         <label class="col-sm-2 col-form-label">Type</label>
                                         <div class="col-sm-10">
                                             <div class="form-check form-switch form-switch-lg">
-                                                <select asp-for="UserType" disabled>
+                                                <select asp-for="UserType">
                                                     <option selected="@(Model.UserType == -1)" value="-1">Account Delete
                                                     </option>
                                                     <option selected="@(Model.UserType == 0)" value="0">Ban account
@@ -220,3 +220,9 @@
         </div>
     </div>
 </body>
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+<script>

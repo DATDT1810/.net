@@ -68,10 +68,10 @@ namespace MyProjectApi.Controllers
             return Response;
         }
 
-        [HttpGet("ResetPass/{Iemail}/{Ipass}")]
-        public IActionResult ResetPass(string Iemail, string Ipass)
+        [HttpGet("ResetPass/{Iusername}/{Ipass}")]
+        public IActionResult ResetPass(string Iusername, string Ipass)
         {
-            if (Iemail == null)
+            if (Iusername == null)
             {
                 return BadRequest("Email can't be nul;");
             }
@@ -79,7 +79,7 @@ namespace MyProjectApi.Controllers
             {
                 return BadRequest("Pass can't be null");
             }
-            var user = this._db.users.FirstOrDefault(u => u.Email.Equals(Iemail));
+            var user = this._db.users.FirstOrDefault(u => u.Username.Equals(Iusername));
 
             user.Password = ComputeMD5Hash(Ipass);
             this._db.SaveChanges();

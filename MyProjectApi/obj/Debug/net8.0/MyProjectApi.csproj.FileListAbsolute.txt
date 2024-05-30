@@ -72,3 +72,5 @@ D:\SU24\MyProject\.net\MyProjectApi\bin\Debug\net8.0\MyProjectApi.runtimeconfig.
 D:\SU24\MyProject\.net\MyProjectApi\bin\Debug\net8.0\MyProjectApi.pdb
 D:\SU24\MyProject\.net\MyProjectApi\obj\Debug\net8.0\MyProjectApi.genruntimeconfig.cache
 D:\SU24\MyProject\.net\MyProjectApi\obj\Debug\net8.0\ref\MyProjectApi.dll
+D:\SU24\MyProject\.net\MyProjectApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\SU24\MyProject\.net\MyProjectApi\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll

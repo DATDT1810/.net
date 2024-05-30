@@ -50,39 +50,6 @@ namespace MyProjectApi.Controllers
             return Ok(user);
         }
 
-        // [HttpPost]
-        // public IActionResult SignUp(Users user)
-        // {
-        //     if (user == null)
-        //     {
-        //         return BadRequest("User data is required");
-        //     }
-        //     var existingUser = this._db.users.FirstOrDefault(u => u.Username == user.Username || u.Email == user.Email);
-        //     if (existingUser != null)
-        //     {
-        //         return BadRequest("Username or email already exists. Please choose a different username or email.");
-        //     }
-        //     var hashedPassword = ComputeMD5Hash(user.Password);
-        //     this._db.users.Add(new Users(user.FirstName, user.LastName, user.DateOfBirth, user.Gender, user.Address, user.Picture, user.ZipCode, user.PhoneNumber, user.Email, user.Username, user.IDCard, hashedPassword, user.UserType, user.isDeleted, user.createdAt, user.updateAt));
-        //     this._db.SaveChanges();
-        //     return Ok(user);
-        // }
-
-        // public static string ComputeMD5Hash(string password)
-        // {
-        //     using (MD5 md5 = MD5.Create())
-        //     {
-        //         byte[] inputBytes = Encoding.ASCII.GetBytes(password);
-        //         byte[] hashBytes = md5.ComputeHash(inputBytes);
-
-        //         StringBuilder sb = new StringBuilder();
-        //         for (int i = 0; i < hashBytes.Length; i++)
-        //         {
-        //             sb.Append(hashBytes[i].ToString("X2"));
-        //         }
-        //         return sb.ToString();
-        //     }
-        // }
         [HttpPost]
         public IActionResult SignUp(Users user)
         {

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "HeEoK15TpSgbV/BgUbF3bq/PkHWuRBciwoX+DElrCaRHpNp7hLfqsNmleu7AxCJ7HPRkxyzL2gzdguoYlKdPYA==",
+  "dgSpecHash": "qyK6VH/rXh1MYHaM3PTGg03+zAXHuWGcVaOYx/WK4CKTdEnPeURhIbysVNSrVKSXzuzO3MA60dujXBoSFt4dhg==",
   "success": true,
   "projectFilePath": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\MyProjectClient.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\duong\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\8.0.6\\microsoft.aspnetcore.authentication.google.8.0.6.nupkg.sha512",
     "C:\\Users\\duong\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\2.2.0\\microsoft.aspnetcore.cryptography.internal.2.2.0.nupkg.sha512",
     "C:\\Users\\duong\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.2.0\\microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",
     "C:\\Users\\duong\\.nuget\\packages\\microsoft.aspnetcore.dataprotection.abstractions\\2.2.0\\microsoft.aspnetcore.dataprotection.abstractions.2.2.0.nupkg.sha512",

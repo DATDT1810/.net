@@ -13,8 +13,16 @@
       "PackagePath": "staticwebassets\\assets\\user_pic\\Screenshot 2024-05-28 131543.png"
     },
     {
+      "Id": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\assets\\user_pic\\images.png",
+      "PackagePath": "staticwebassets\\assets\\user_pic\\images.png"
+    },
+    {
       "Id": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\assets\\user_pic\\l60Hf-150x150.png",
       "PackagePath": "staticwebassets\\assets\\user_pic\\l60Hf-150x150.png"
+    },
+    {
+      "Id": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\assets\\user_pic\\z5491540883382_be13c6b5dd1ae4411df8d1fd3fd622fa.jpg",
+      "PackagePath": "staticwebassets\\assets\\user_pic\\z5491540883382_be13c6b5dd1ae4411df8d1fd3fd622fa.jpg"
     },
     {
       "Id": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\css\\confirmEmail.css",
@@ -35,6 +43,10 @@
     {
       "Id": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\css\\usermanage.css",
+      "PackagePath": "staticwebassets\\css\\usermanage.css"
     },
     {
       "Id": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\favicon.ico",

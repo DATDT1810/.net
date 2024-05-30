@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "UNfS+saMgwR99TT2u5Ww4Q57Wdi4BhLXoUZRwYFnXx8=",
+  "Hash": "LeCgS9AyydNgJx/Fesk7vvWEHOIkCYaoMQIOWzhPeE8=",
   "Source": "MyProjectClient",
   "BasePath": "_content/MyProjectClient",
   "Mode": "Default",
@@ -55,6 +55,25 @@
       "OriginalItemSpec": "wwwroot\\assets\\login_pic\\sign-up.png"
     },
     {
+      "Identity": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\assets\\user_pic\\images.png",
+      "SourceId": "MyProjectClient",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\",
+      "BasePath": "_content/MyProjectClient",
+      "RelativePath": "assets/user_pic/images.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\user_pic\\images.png"
+    },
+    {
       "Identity": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\assets\\user_pic\\l60Hf-150x150.png",
       "SourceId": "MyProjectClient",
       "SourceType": "Discovered",
@@ -91,6 +110,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\user_pic\\Screenshot 2024-05-28 131543.png"
+    },
+    {
+      "Identity": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\assets\\user_pic\\z5491540883382_be13c6b5dd1ae4411df8d1fd3fd622fa.jpg",
+      "SourceId": "MyProjectClient",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\",
+      "BasePath": "_content/MyProjectClient",
+      "RelativePath": "assets/user_pic/z5491540883382_be13c6b5dd1ae4411df8d1fd3fd622fa.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\user_pic\\z5491540883382_be13c6b5dd1ae4411df8d1fd3fd622fa.jpg"
     },
     {
       "Identity": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\css\\confirmEmail.css",
@@ -186,6 +224,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\css\\usermanage.css",
+      "SourceId": "MyProjectClient",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\",
+      "BasePath": "_content/MyProjectClient",
+      "RelativePath": "css/usermanage.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\usermanage.css"
     },
     {
       "Identity": "D:\\SU24\\MyProject\\.net\\MyProjectClient\\wwwroot\\favicon.ico",

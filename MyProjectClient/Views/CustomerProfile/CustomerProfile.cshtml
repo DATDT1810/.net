@@ -129,14 +129,12 @@
                                         placeholder="Date of birth">
                                     <span asp-validation-for="DateOfBirth" class="error"></span>
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-6 mt-3">
+                                    <label asp-for="Gender" class="form-label ms-3"></label> 
                                     <input type="radio" asp-for="Gender" value="Male">
                                     <span>Male</span>
                                     <input type="radio" asp-for="Gender" value="Female">
-                                    <span>Male</span>
-                                    <label asp-for="Gender" class="form-label"></label>
-                                    <input type="text" asp-for="Gender" class="form-control">
-                                    <span asp-validation-for="Gender" class="error"></span>
+                                    <span>Female</span>
                                 </div>
                             </div>
                             <div class="row">
