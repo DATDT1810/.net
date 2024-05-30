@@ -34,24 +34,16 @@
     <div id="newProfileContainer" class="container bg-white mt-5 mb-5">
         <div class="d-flex justify-content-center align-items-center">
             <div class="border-right">
-                <div class="p-2 py-2 card">
+                <div class="p-2 card">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 style="margin: 0 auto;">Add Staff</h4>
+                        <div class="float-end">
+                            <a asp-controller="UserManagement" asp-action="Index" data-bs-toggle="tooltip" title
+                                class="btn btn-success" data-bs-original-title="Back" aria-label="Back"><i
+                                    class="fas fa-reply"></i></a>
+                        </div>
                     </div>
                     <form asp-controller="UserManagement" asp-action="Create" method="post">
-                        <div class="row mt-2">
-                            <div class="col-md-6">
-                                <label asp-for="ZipCode" class="labels"></label>
-                                <input asp-for="ZipCode" type="text" class="form-control" placeholder="ZipCode">
-                                <span asp-validation-for="ZipCode" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label asp-for="IDCard" class="labels"></label>
-                                <input asp-for="IDCard" type="text" class="form-control" placeholder="IDCard">
-                                <span asp-validation-for="IDCard" class="text-danger"></span>
-                            </div>
-
-                        </div>
                         <div class="mt-2">
                             <div class="col-md-12">
                                 <label asp-for="Email" class="labels"></label>
@@ -104,3 +96,4 @@
         }
     }, 3000);
 </script>
+<script src="/_framework/aspnetcore-browser-refresh.js"></script>

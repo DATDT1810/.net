@@ -43,16 +43,40 @@ namespace MyProjectApi.Controllers
             {
                 return BadRequest("User can't be null");
             }
-            Users obj = this._db.users.AsNoTracking().FirstOrDefault(u => u.Username.Equals(id));
-            if (obj == null)
+
+            // Retrieve the existing user from the database
+            var existingUser = this._db.users.FirstOrDefault(u => u.Username == id);
+            if (existingUser == null)
             {
-                return NotFound("Could not be found");
+                return NotFound("User could not be found");
             }
-            var hassPass = ComputeMD5Hash(user.Password);
-            this._db.users.Update(new Users(user.FirstName, user.LastName, user.DateOfBirth, user.Gender, user.Address, user.Picture, user.ZipCode, user.PhoneNumber, user.Email, user.Username, user.IDCard, hassPass, user.UserType, user.isDeleted, user.createdAt, user.updateAt));
+
+            // Update the existing user's properties
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+            existingUser.DateOfBirth = user.DateOfBirth;
+            existingUser.Gender = user.Gender;
+            existingUser.Address = user.Address;
+            existingUser.Picture = user.Picture;
+            existingUser.ZipCode = user.ZipCode;
+            existingUser.PhoneNumber = user.PhoneNumber;
+            existingUser.Email = user.Email;
+            existingUser.IDCard = user.IDCard;
+            existingUser.UserType = 3;
+            existingUser.isDeleted = false;
+            existingUser.createdAt = user.createdAt;
+            existingUser.updateAt = user.updateAt;
+            if(existingUser.Password == user.Password){
+                existingUser.Password = user.Password;
+            }else{
+                existingUser.Password = ComputeMD5Hash(user.Password);
+            }
+            // Save the changes to the database
             this._db.SaveChanges();
-            return Ok(user);
+
+            return Ok(existingUser);
         }
+
 
         public static string ComputeMD5Hash(string password)
         {

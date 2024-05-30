@@ -7,7 +7,6 @@ D:\SU24\MyProject\.net\MyProjectClient\bin\Debug\net8.0\MyProjectClient.deps.jso
 D:\SU24\MyProject\.net\MyProjectClient\bin\Debug\net8.0\MyProjectClient.runtimeconfig.json
 D:\SU24\MyProject\.net\MyProjectClient\bin\Debug\net8.0\MyProjectClient.pdb
 D:\SU24\MyProject\.net\MyProjectClient\bin\Debug\net8.0\Newtonsoft.Json.dll
-D:\SU24\MyProject\.net\MyProjectClient\bin\Debug\net8.0\System.Security.Permissions.dll
 D:\SU24\MyProject\.net\MyProjectClient\obj\Debug\net8.0\MyProjectClient.csproj.AssemblyReference.cache
 D:\SU24\MyProject\.net\MyProjectClient\obj\Debug\net8.0\MyProjectClient.GeneratedMSBuildEditorConfig.editorconfig
 D:\SU24\MyProject\.net\MyProjectClient\obj\Debug\net8.0\MyProjectClient.AssemblyInfoInputs.cache
@@ -31,3 +30,5 @@ D:\SU24\MyProject\.net\MyProjectClient\obj\Debug\net8.0\refint\MyProjectClient.d
 D:\SU24\MyProject\.net\MyProjectClient\obj\Debug\net8.0\MyProjectClient.pdb
 D:\SU24\MyProject\.net\MyProjectClient\obj\Debug\net8.0\MyProjectClient.genruntimeconfig.cache
 D:\SU24\MyProject\.net\MyProjectClient\obj\Debug\net8.0\ref\MyProjectClient.dll
+D:\SU24\MyProject\.net\MyProjectClient\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.Google.dll
+D:\SU24\MyProject\.net\MyProjectClient\bin\Debug\net8.0\System.Security.Permissions.dll

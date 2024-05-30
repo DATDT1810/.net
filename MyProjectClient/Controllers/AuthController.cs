@@ -8,6 +8,9 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -38,125 +41,82 @@ namespace MyProjectClient.Controllers
             return View();
         }
 
-        // [HttpPost]
-        // public async Task<IActionResult> Login(string username, string password)
-        // {
-        //     if (username == null || password == null)
-        //     {
-        //         ViewBag.errorMessage = ("Please enter your username and password!");
-        //         return View("Login");
-        //     }
-        //     HttpResponseMessage response = await client.GetAsync(api + "/getUser/" + username + "/" + password);
-        //     if (!response.IsSuccessStatusCode)
-        //     {
-        //         ViewBag.errorMessage = ("User doesn't exist");
-        //         return View("Login");
-        //     }
-
-        //     string data = await response.Content.ReadAsStringAsync();
-        //     var result = JsonObject.Parse(data); // threw the exception mentioned in the question
-
-        //     var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        //     var user = JsonSerializer.Deserialize<Users>(data, option);
-
-        //     if (user == null)
-        //     {
-        //         ViewBag.errorMessage = ("User doesn't exist");
-        //         return View("Login");
-        //     }
-
-        //     const string _user = "_user";
-        //     if (user.UserType == 1 || user.UserType == 2)
-        //     {
-        //         HttpContext.Session.SetString(_user, data);
-        //         return RedirectToAction("Index", "UserManagement");
-        //     }
-        //     else if (user.UserType == 3)
-        //     {
-        //         HttpContext.Session.SetString(_user, data);
-        //         return RedirectToAction("CustomerProfile", "CustomerProfile");
-        //     }
-        //     else if (user.UserType == 0)
-        //     {
-        //         ViewBag.errorMessage = ("Your account is ban");
-        //         return View("Login");
-        //     }
-        //     else
-        //     {
-        //         ViewBag.errorMessage = ("Your account does not exit");
-        //         return View("Login");
-        //     }
-        // }
-
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password)
         {
             if (username == null || password == null)
             {
-                ViewBag.errorMessage = "Please enter your username and password!";
+                ViewBag.errorMessage = ("Please enter your username and password!");
+                return View("Login");
+            }
+            HttpResponseMessage response = await client.GetAsync(api + "/getUser/" + username + "/" + password);
+            if (!response.IsSuccessStatusCode)
+            {
+                ViewBag.errorMessage = ("User doesn't exist");
                 return View("Login");
             }
 
-            try
+            string data = await response.Content.ReadAsStringAsync();
+            var result = JsonObject.Parse(data); // threw the exception mentioned in the question
+
+            var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var user = JsonSerializer.Deserialize<Users>(data, option);
+
+            if (user == null)
             {
-                HttpResponseMessage response = await client.GetAsync($"{api}/getUser/{username}/{password}");
-                response.EnsureSuccessStatusCode(); // Ensure HTTP success status code
-
-                string data = await response.Content.ReadAsStringAsync();
-
-                if (string.IsNullOrWhiteSpace(data))
-                {
-                    ViewBag.errorMessage = "Empty response from the API.";
-                    return View("Login");
-                }
-
-                var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var user = JsonSerializer.Deserialize<Users>(data, option);
-
-                if (user == null)
-                {
-                    ViewBag.errorMessage = "User doesn't exist";
-                    return View("Login");
-                }
-
-                const string _user = "_user";
-                if (user.UserType == 1 || user.UserType == 2)
-                {
-                    HttpContext.Session.SetString(_user, JsonSerializer.Serialize(user));
-                    return RedirectToAction("Index", "UserManagement");
-                }
-                else if (user.UserType == 3)
-                {
-                    HttpContext.Session.SetString(_user, JsonSerializer.Serialize(user));
-                    return RedirectToAction("CustomerProfile", "CustomerProfile");
-                }
-                else if (user.UserType == 0)
-                {
-                    ViewBag.errorMessage = "Your account is banned.";
-                    return View("Login");
-                }
-                else
-                {
-                    ViewBag.errorMessage = "Your account does not exist.";
-                    return View("Login");
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                ViewBag.errorMessage = "Error communicating with the API: " + ex.Message;
+                ViewBag.errorMessage = ("User doesn't exist");
                 return View("Login");
             }
-            catch (JsonException ex)
+
+            const string _user = "_user";
+            if (user.UserType == 1 || user.UserType == 2)
             {
-                ViewBag.errorMessage = "Error deserializing JSON response: " + ex.Message;
+                HttpContext.Session.SetString(_user, JsonSerializer.Serialize(user));
+                return RedirectToAction("Index", "UserManagement");
+            }
+            else if (user.UserType == 3)
+            {
+                HttpContext.Session.SetString(_user, JsonSerializer.Serialize(user));
+                return RedirectToAction("CustomerProfile", "CustomerProfile");
+            }
+            else if (user.UserType == 0)
+            {
+                ViewBag.errorMessage = ("Your account is ban");
                 return View("Login");
             }
-            catch (Exception ex)
+            else
             {
-                ViewBag.errorMessage = "An error occurred: " + ex.Message;
+                ViewBag.errorMessage = ("Your account does not exit");
                 return View("Login");
             }
         }
+
+        public async Task LoginWithGoogle()
+        {
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme,
+            new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("GoogleResponse")
+            });
+        }
+
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new
+            {
+                claim.Issuer,
+                claim.OriginalIssuer,
+                claim.Type,
+                claim.Value
+
+            });
+
+            HttpContext.Session.SetString("_user", claims.FirstOrDefault(c => c.Type == "sub")?.Value);
+            return RedirectToAction("CustomerProfile", "CustomerProfile");
+        }
+
+
 
         public IActionResult Logout()
         {
@@ -202,7 +162,6 @@ namespace MyProjectClient.Controllers
             return View(user);
         }
 
-
         public IActionResult ForgotPassword()
         {
             return View();
@@ -211,46 +170,38 @@ namespace MyProjectClient.Controllers
         [HttpPost]
         public async Task<IActionResult> ForgotPassword(string email)
         {
-            if (email == null)
+            if (string.IsNullOrWhiteSpace(email))
             {
                 TempData["SystemNotificationError"] = "Your email is incorrect, Please try again!";
                 return View("ForgotPassword");
             }
+
             HttpResponseMessage response = await client.GetAsync(api);
             string data = await response.Content.ReadAsStringAsync();
 
             var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var Listuser = JsonSerializer.Deserialize<List<Users>>(data, option);
-            Users user = null;
-            foreach (var item in Listuser)
-            {
-                if (item.Email.Equals(email))
-                {
-                    user = item;
-                }
-            }
+            Users user = Listuser?.FirstOrDefault(item => item.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
 
             if (user == null)
             {
                 TempData["SystemNotificationError"] = "Your email does not exist";
                 return View("ForgotPassword");
             }
-            System.Console.WriteLine(user.Email);
+
             response = await client.GetAsync(resetPassApi + "/SendMail/" + user.Email);
             if (response.IsSuccessStatusCode)
             {
-                const string _user = "username";
-                // string userDataJson = JsonConvert.SerializeObject(user);
-                HttpContext.Session.SetString(_user, user.Username);
-
-                var dataCode = response.Content.ReadAsStringAsync().Result;
-                var requestCode = JsonSerializer.Deserialize<string>(dataCode);
+                HttpContext.Session.SetString("username", user.Username);
+                string dataCode = await response.Content.ReadAsStringAsync();
+                string requestCode = JsonSerializer.Deserialize<string>(dataCode);
                 TempData["RequestCode"] = requestCode;
+                TempData.Keep("RequestCode"); // Ensure TempData is kept for the next request
             }
             return View("ConfirmEmail");
         }
 
-        private IActionResult ConfirmEmail()
+        public IActionResult ConfirmEmail()
         {
             return View();
         }
@@ -259,14 +210,23 @@ namespace MyProjectClient.Controllers
         public async Task<IActionResult> ConfirmEmail(string code)
         {
             string requestCode = TempData["RequestCode"] as string;
-            if (requestCode.Equals(code))
+
+            if (requestCode == null)
+            {
+                TempData["SystemNotificationError"] = "Request code is missing. Please try the password reset process again.";
+                return RedirectToAction("ForgotPassword");
+            }
+
+            if (requestCode.Equals(code, StringComparison.OrdinalIgnoreCase))
             {
                 return View("ResetPassword");
             }
-            return RedirectToAction("Login");
+
+            TempData["SystemNotificationError"] = "The code you entered is incorrect.";
+            return View("ConfirmEmail");
         }
 
-        private IActionResult ResetPassword()
+        public IActionResult ResetPassword()
         {
             return View();
         }
@@ -274,14 +234,22 @@ namespace MyProjectClient.Controllers
         [HttpPost]
         public async Task<IActionResult> ResetPassword(string pass)
         {
-            string email = HttpContext.Session.GetString("username");
+            string username = HttpContext.Session.GetString("username");
 
-            HttpResponseMessage response = await client.GetAsync(resetPassApi + "/ResetPass/" + email + "/" + pass);
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                TempData["SystemNotificationError"] = "Session has expired or invalid. Please try again.";
+                return RedirectToAction("Login");
+            }
+
+            HttpResponseMessage response = await client.GetAsync(resetPassApi + "/ResetPass/" + username + "/" + pass);
             if (response.IsSuccessStatusCode)
             {
                 HttpContext.Session.Clear();
                 return RedirectToAction("Login");
             }
+
+            TempData["SystemNotificationError"] = "Failed to reset password. Please try again.";
             HttpContext.Session.Clear();
             return View();
         }

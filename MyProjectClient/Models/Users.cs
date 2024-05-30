@@ -17,7 +17,7 @@ namespace MyProjectClient.Models
         public string Address { get; set; }
         public string Picture { get; set; }
         // [Required]
-        // [RegularExpression(@"^[1-9]\d*$", ErrorMessage = "ZipCode must be a positive number.")]
+        [RegularExpression(@"^[1-9]\d{4}$", ErrorMessage = "ZipCode must be a positive number with exactly 5 digits starting from 1 to 9.")]
         public string ZipCode { get; set; }
         [Required]
         [RegularExpression(@"^0[1-9]{2}[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}$", ErrorMessage = "Please enter a 10-digit phone number beginning with the number '0'!")]

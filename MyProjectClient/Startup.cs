@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +37,20 @@ namespace MyProjectClient
             });
             services.AddHttpClient();
             services.AddControllersWithViews();
+
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                }) 
+                .AddCookie()
+                .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+                {
+                    options.ClientId = Configuration.GetSection("GoogleKeys:ClientId").Value;
+                    options.ClientSecret = Configuration.GetSection("GoogleKeys:ClientSecret").Value;
+                    options.CallbackPath = "/signin-google";
+                    options.Scope.Add("profile");
+                });
 
         }
 

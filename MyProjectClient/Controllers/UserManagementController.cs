@@ -105,66 +105,6 @@ namespace MyProjectClient.Controllers
             }
             return Redirect("Home/Error");
         }
-        // [HttpPost]
-        // public async Task<IActionResult> UserDetails(string id, Users user, IFormFile userPicture)
-        // {
-        //     Users existingUser = await GetUserDetailsAsync(id);
-        //     if (existingUser == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     if (userPicture != null && userPicture.Length > 0)
-        //     {
-        //         var fileName = Path.GetFileName(userPicture.FileName);
-        //         var filePath = Path.Combine(_hostingEnvironment.WebRootPath, "assets/user_pic", fileName);
-        //         using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //         {
-        //             await userPicture.CopyToAsync(fileStream);
-        //         }
-        //         user.Picture = fileName;
-        //     }
-        //     else
-        //     {
-        //         user.Picture = existingUser.Picture; // Keep the existing picture if no new picture is uploaded
-        //     }
-
-        //     user.Email = existingUser.Email; // Ensure email is not changed
-        //     user.Username = existingUser.Username; // Ensure username is not changed
-        //     user.Password = existingUser.Password; // Ensure password is not changed
-
-        //     user.createdAt = existingUser.createdAt; // Ensure createdAt is not changed
-        //     user.updateAt = DateTime.Now; // Update the updateAt timestamp
-
-        //     // Ensure UserType is either 2 (staff) or 3 (customer)
-        //     if (user.UserType != 2 && user.UserType != 3)
-        //     {
-        //         user.UserType = existingUser.UserType;
-        //     }
-
-        //     // Exclude password from serialization if not being updated
-        //     if (string.IsNullOrEmpty(user.Password))
-        //     {
-        //         user.Password = existingUser.Password;
-        //     }
-
-        //     string data = JsonSerializer.Serialize(user);
-        //     var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-
-        //     HttpResponseMessage response = await client.PutAsync(userApi + "/" + id, content);
-        //     if (response.IsSuccessStatusCode)
-        //     {
-        //         TempData["SystemNotification"] = "Edited the object successfully";
-        //         return RedirectToAction("Index", new { id = 3 });
-        //     }
-
-        //     string responseBody = await response.Content.ReadAsStringAsync();
-        //     Console.WriteLine($"Response Code: {response.StatusCode}, Reason: {response.ReasonPhrase}, Response Body: {responseBody}");
-
-        //     TempData["SystemNotificationError"] = $"Error editing user: {response.ReasonPhrase}";
-        //     return Redirect("Home/Error");
-        // }
-
 
         [HttpGet]
         public async Task<IActionResult> BanAccount(string id, int uStyle)
@@ -174,18 +114,32 @@ namespace MyProjectClient.Controllers
             {
                 return NotFound();
             }
+
             user.UserType = uStyle;
+
             string data = JsonSerializer.Serialize(user);
             var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PutAsync(userApi + "/" + id, content);
+
             if (response.IsSuccessStatusCode)
             {
-                ViewBag.SystemNotification = "Ban account successful";
-                var userList = await GetUserListAsync();
-                return Json("User has been banned.");
+                string notificationMessage = uStyle switch
+                {
+                    0 => "User has been banned.",
+                    3 => "User has been unbanned.",
+                    -1 => "User has been deleted.",
+                    _ => "Operation successful."
+                };
+                TempData["SystemNotification"] = notificationMessage;
+                return Json(notificationMessage);
             }
-            return Json("Failed to ban user.");
+            else
+            {
+                TempData["SystemNotificationError"] = "Failed to ban user.";
+                return Json("Failed to ban user.");
+            }
         }
+
 
         public IActionResult Create()
         {
@@ -255,6 +209,29 @@ namespace MyProjectClient.Controllers
                 // Handle error if needed
                 return null;
             }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetOrderFiltered(string userName)
+        {
+            if (string.IsNullOrEmpty(userName))
+            {
+                return NotFound("Invalid customer name");
+            }
+
+            // Call the API with the constructed query string
+            HttpResponseMessage response = await client.GetAsync($"https://localhost:5001/api/UserManagement/search/{userName}");
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+
+                // Deserialize the response data to a list of orders
+                var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var orderList = JsonSerializer.Deserialize<List<Users>>(data, option);
+                return View("GetOrderFiltered", orderList);
+            }
+            return NotFound();
         }
     }
 }
