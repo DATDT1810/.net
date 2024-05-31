@@ -67,6 +67,11 @@ namespace MyProjectApi.Controllers
             {
                 return NotFound("User not found");
             }
+            var existingUsers = this._db.users.FirstOrDefault(u => u.Username == user.Username || u.Email == user.Email);
+            if (existingUser != null)
+            {
+                return BadRequest("Username or email already exists. Please choose a different username or email.");
+            }
 
             // Lưu thông tin người dùng trước khi cập nhật
             string originalData = GetUserDataAsString(existingUser);
