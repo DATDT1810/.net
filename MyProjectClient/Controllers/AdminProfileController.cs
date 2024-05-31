@@ -74,8 +74,9 @@ namespace MyProjectClient.Controllers
         {
             // Lấy id của người dùng từ Session
             string id = HttpContext.Session.GetString("_user");
-            // Chuyển chuổi id lấy được thành đối tượng User
-            var user1 = JsonSerializer.Deserialize<Users>(id);
+            // var user1 = JsonSerializer.Deserialize<Users>(id);
+            Users existingUser = JsonSerializer.Deserialize<Users>(id);
+
             if (UserPicture != null && UserPicture.Length > 0)
             {
                 // Lấy tên file ảnh
@@ -85,29 +86,41 @@ namespace MyProjectClient.Controllers
                 // Lưu file ảnh vào đường dẫn đã xác định
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    UserPicture.CopyTo(fileStream);
+                    await UserPicture.CopyToAsync(fileStream);
                 }
                 // Cập nhật đường dẫn vào user
                 user.Picture = fileName;
             }
             else
             {
-                user.Picture = user1.Picture;
+                user.Picture = existingUser.Picture;
             }
-            // Cập nhật userName từ session vào object user
-            user.Picture = user1.Picture;
-            user.updateAt = DateTime.Now;
+             // Cập nhật thông tin của người dùng
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+            existingUser.DateOfBirth = user.DateOfBirth;
+            existingUser.Gender = user.Gender;
+            existingUser.Address = user.Address;
+            existingUser.Picture = user.Picture;
+            existingUser.ZipCode = user.ZipCode;
+            existingUser.PhoneNumber = user.PhoneNumber;
+            existingUser.Email = user.Email;
+            existingUser.IDCard = user.IDCard;
+            existingUser.UserType = 1;
+            existingUser.isDeleted = false;
+            existingUser.updateAt = DateTime.Now; 
             // Chuyển đổi user thành chuỗi Json
             string data = JsonSerializer.Serialize(user);
-            // Tạo http để gửi đi
-            var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
             // Gửi yêu cầu PUT đến API để cập nhật thông tin
-            HttpResponseMessage response = await client.PutAsync(api + "/" + user1.Username, content);
+            var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PutAsync(api + "/" + existingUser.Username, content);
+
             if (response.IsSuccessStatusCode)
             {
-                TempData["SystemNotificationAdmin"] = "Your changes have been saved successfully!";
-                return RedirectToAction("Index");
+                TempData["SystemNotification"] = "Your changes have been saved successfully!";
+                return RedirectToAction("Index", "AdminProfile");
             }
+
             return RedirectToAction("Index", "Home");
         }
     }

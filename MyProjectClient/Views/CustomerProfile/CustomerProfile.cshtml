@@ -67,10 +67,10 @@
 
 <body>
     <div class="container">
-        @if (TempData["SystemNotificationAdmin"] != null)
+        @if (TempData["SystemNotification"] != null)
         {
             <div id="systemNotification" class="alert alert-success mt-1">
-                <p class="text-dark">Notification: @TempData["SystemNotificationAdmin"]</p>
+                <p class="text-dark">Notification: @TempData["SystemNotification"]</p>
             </div>
         }
         <div class="row" style="margin-top: 10px;">

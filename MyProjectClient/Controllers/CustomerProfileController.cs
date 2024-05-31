@@ -79,14 +79,14 @@ namespace MyProjectClient.Controllers
             existingUser.PhoneNumber = user.PhoneNumber;
             existingUser.Email = user.Email;
             existingUser.IDCard = user.IDCard;
-            existingUser.UserType = user.UserType;
-            existingUser.isDeleted = user.isDeleted;
+            existingUser.UserType = 3;
+            existingUser.isDeleted = false;
             existingUser.updateAt = DateTime.Now; 
             // Chuyển đổi user thành chuỗi Json
             string data = JsonSerializer.Serialize(user);
             // Gửi yêu cầu PUT đến API để cập nhật thông tin
             var content = new StringContent(data, System.Text.Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PutAsync(userApi + "/" + id, content);
+            HttpResponseMessage response = await client.PutAsync(userApi + "/" + existingUser.Username, content);
 
             if (response.IsSuccessStatusCode)
             {
