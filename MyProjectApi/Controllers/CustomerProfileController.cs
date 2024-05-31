@@ -51,6 +51,19 @@ namespace MyProjectApi.Controllers
                 return NotFound("User could not be found");
             }
 
+            // Check if the new username or email already exists in the database excluding the current user
+            var existingUsername = this._db.users.FirstOrDefault(u => u.Username == user.Username && u.Username != id);
+            if (existingUsername != null)
+            {
+                return BadRequest("Username already exists. Please choose a different username.");
+            }
+
+            var existingEmail = this._db.users.FirstOrDefault(u => u.Email == user.Email && u.Username != id);
+            if (existingEmail != null)
+            {
+                return BadRequest("Email already exists. Please choose a different email.");
+            }
+
             // Update the existing user's properties
             existingUser.FirstName = user.FirstName;
             existingUser.LastName = user.LastName;
@@ -61,14 +74,18 @@ namespace MyProjectApi.Controllers
             existingUser.ZipCode = user.ZipCode;
             existingUser.PhoneNumber = user.PhoneNumber;
             existingUser.Email = user.Email;
+            existingUser.Username = user.Username;
             existingUser.IDCard = user.IDCard;
             existingUser.UserType = 3;
             existingUser.isDeleted = false;
             existingUser.createdAt = user.createdAt;
             existingUser.updateAt = user.updateAt;
-            if(existingUser.Password == user.Password){
+            if (existingUser.Password == user.Password)
+            {
                 existingUser.Password = user.Password;
-            }else{
+            }
+            else
+            {
                 existingUser.Password = ComputeMD5Hash(user.Password);
             }
             // Save the changes to the database

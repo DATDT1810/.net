@@ -68,7 +68,7 @@ namespace MyProjectClient.Controllers
             {
                 user.Picture = existingUser.Picture;
             }
-             // Cập nhật thông tin của người dùng
+            // Cập nhật thông tin của người dùng
             existingUser.FirstName = user.FirstName;
             existingUser.LastName = user.LastName;
             existingUser.DateOfBirth = user.DateOfBirth;
@@ -81,7 +81,7 @@ namespace MyProjectClient.Controllers
             existingUser.IDCard = user.IDCard;
             existingUser.UserType = 3;
             existingUser.isDeleted = false;
-            existingUser.updateAt = DateTime.Now; 
+            existingUser.updateAt = DateTime.Now;
             // Chuyển đổi user thành chuỗi Json
             string data = JsonSerializer.Serialize(user);
             // Gửi yêu cầu PUT đến API để cập nhật thông tin
@@ -94,7 +94,12 @@ namespace MyProjectClient.Controllers
                 return RedirectToAction("CustomerProfile");
             }
 
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                ModelState.AddModelError(string.Empty, errorMessage);
+                return View(user); // Ensure the view returns the model with the error messages
+            }
         }
 
         private async Task<Users> GetUserDetailsAsync(string id)
